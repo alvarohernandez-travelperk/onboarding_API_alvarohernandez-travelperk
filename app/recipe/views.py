@@ -1,9 +1,15 @@
 """
 Views for the recipe APIs
 """
-from rest_framework import viewsets
+from rest_framework import (
+    viewsets,
+    mixins,
+)
 
-from core.models import Recipe
+from core.models import (
+    Recipe,
+    Ingredient,
+)
 from recipe import serializers
 
 
@@ -26,3 +32,18 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Create a new recipe."""
         serializer.save()
+
+
+class IngredientViewSet(
+    mixins.DestroyModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet
+):
+    """Manage ingredients in the database."""
+    serializer_class = serializers. IngredientSerializer
+    queryset = Ingredient.objects.all()
+
+    def get_queryset(self):
+        """return queryset"""
+        return self.queryset.order_by('-name')
