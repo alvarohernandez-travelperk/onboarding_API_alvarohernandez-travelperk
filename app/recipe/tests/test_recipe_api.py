@@ -14,6 +14,7 @@ from recipe.serializers import RecipeSerializer
 
 RECIPES_URL = reverse('recipe:recipe-list')
 
+
 def create_recipe(**params):
     """Create and return a sample recipe."""
     defaults = {
