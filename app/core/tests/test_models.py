@@ -10,9 +10,8 @@ class ModelTests(TestCase):
     def test_create_recipe(self):
         """Test creating a recipe is successful."""
         recipe = models.Recipe.objects.create(
-            title='Sample recip name',
+            title='Sample recipe name',
             description='Sample recipe description'
         )
-
 
         self.assertEqual(str(recipe), recipe.title)
