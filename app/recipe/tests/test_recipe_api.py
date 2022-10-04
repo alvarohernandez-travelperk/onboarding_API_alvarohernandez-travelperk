@@ -74,3 +74,46 @@ class PrivateRecipeAPITests(TestCase):
         recipe = Recipe.objects.get(id=res.data['id'])
         for k, v in payload.items():
             self.assertEqual(getattr(recipe, k), v)
+
+    def test_partial_update(self):
+        """Test partial update of a recipe."""
+        mockDescription = 'Sample recipe description'
+        recipe = create_recipe(title='Sample recipe title',
+                               description=mockDescription)
+
+        payload = {'title': 'Sample recipe title updated'}
+        url = detail_url(recipe.id)
+        res = self.client.patch(url, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        recipe.refresh_from_db()
+        self.assertEqual(recipe.title, payload['title'])
+        self.assertEqual(recipe.description, mockDescription)
+
+    def test_full_update(self):
+        """Test full update of a recipe."""
+        mockTitle = 'Sample recipe title'
+        mockDescription = 'Sample recipe description'
+        recipe = create_recipe(title=mockTitle, description=mockDescription)
+
+        payload = {'title': 'Sample recipe title updated',
+                   'description': 'Sample recipe description updated'}
+        url = detail_url(recipe.id)
+        res = self.client.put(url, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        recipe.refresh_from_db()
+        for k, v in payload.items():
+            self.assertEqual(getattr(recipe, k), v)
+        # self.assertEqual(recipe.title, payload['title'])
+        # self.assertEqual(recipe.description, payload['description'])
+
+    def test_delete_recipe(self):
+        """Test deleting a recipe successful."""
+        recipe = create_recipe()
+
+        url = detail_url(recipe.id)
+        res = self.client.delete(url)
+
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Recipe.objects.filter(id=recipe.id).exists())
