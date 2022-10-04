@@ -14,6 +14,12 @@ from recipe.serializers import (
     RecipeDetailSerializer,
 )
 
+import datetime
+# import the logging library
+import logging
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+
 RECIPES_URL = reverse('recipe:recipe-list')
 
 
@@ -69,6 +75,8 @@ class PrivateRecipeAPITests(TestCase):
             'description': 'Sample description',
         }
         res = self.client.post(RECIPES_URL, payload)
+        # Testing logger in python
+        logger.warning('Recipe created for testing at '+str(datetime.datetime.now())+' hours!')
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         recipe = Recipe.objects.get(id=res.data['id'])
