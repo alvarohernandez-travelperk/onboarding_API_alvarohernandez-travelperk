@@ -25,8 +25,9 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     def _get_or_create_ingredients(self, ingredients, recipe):
         """Getting or creating ingredients as needed."""
-        for ingredient in ingredients: 
-            ingredient_obj, create = Ingredient.objects.get_or_create(**ingredient)
+        for ingredient in ingredients:
+            ingredient_obj, create = Ingredient.objects.get_or_create(
+                **ingredient)
             recipe.ingredients.add(ingredient_obj)
 
     def create(self, validated_data):
@@ -34,7 +35,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         ingredients = validated_data.pop('ingredients', [])
         recipe = Recipe.objects.create(**validated_data)
         self._get_or_create_ingredients(ingredients, recipe)
-        
+
         return recipe
 
     def update(self, instance, validated_data):
@@ -50,6 +51,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
 
 class RecipeDetailSerializer(RecipeSerializer):
     """Serializer for recipe detail view. -  Extends RecipeSerializer class"""
