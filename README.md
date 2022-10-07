@@ -16,11 +16,11 @@ Runs the container.
 
 ### `docker-compose run --rm app sh -c "python manage.py test"`
 
-Runs the tests
+Runs the tests.
 
 ### `docker-compose run --rm app sh -c "flake8"`
 
-Runs the linter
+Runs the linter.
 
 ### `http://127.0.0.1:8000/api/docs/`
 
